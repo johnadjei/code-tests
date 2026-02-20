@@ -1,0 +1,8 @@
+[project]
+name = "inventory-reconciliation"
+version = "0.1.0"
+description = "Compare two inventory CSV snapshots and report changes"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest"]
