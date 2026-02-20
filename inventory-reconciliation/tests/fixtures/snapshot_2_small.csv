@@ -1,0 +1,6 @@
+sku,product_name,qty,warehouse,updated_at
+SKU-001,Widget A,110,Warehouse A,2024-01-15
+SKU005, Widget B,70.0,Warehouse B,2024-01-15
+sku-003,Widget C,30,Warehouse A,01/15/2024
+SKU-006,Widget F,40,Warehouse D,2024-01-15
+,-5,Missing Name,Warehouse X,2024-01-15

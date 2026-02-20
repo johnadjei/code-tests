@@ -2,7 +2,9 @@
 
 ## Approach
 
-TODO: Fill in after implementation is complete.
+The script loads two CSV snapshots, normalizes their schemas via config-driven column mappings, cleans up each field (SKU casing/hyphens, whitespace, date formats, quantity types), and flags anything suspicious along the way. Duplicates within a snapshot are excluded entirely — both rows get dropped rather than picking one arbitrarily.
+
+So far the data loading and normalization layer is in place with 30 tests covering the individual functions and the full `load_snapshot` pipeline. Reconciliation and output generation are next.
 
 ## Key Decisions
 

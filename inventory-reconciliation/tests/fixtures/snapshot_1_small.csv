@@ -1,0 +1,6 @@
+sku,name,quantity,location,last_counted
+SKU-001,Widget A,100,Warehouse A,2024-01-08
+SKU-002, Widget B ,50,Warehouse B,2024-01-08
+SKU-003,Widget C,30,Warehouse A,2024-01-08
+SKU-004,Widget D,20,Warehouse C,2024-01-08
+SKU-004,Widget D Copy,25,Warehouse C,2024-01-08
