@@ -10,7 +10,7 @@ Output is written to two files: a JSON report with metadata, quality issues, and
 
 The whole thing is driven by a CLI (`python reconcile.py`) that accepts optional snapshot paths and output directory, defaulting to paths in `config.py`. Paths are resolved relative to the script's location so it works the same whether invoked from the project root or elsewhere.
 
-Tests cover the following: normalization, column mapping, data loading, reconciliation logic, output generation, CLI argument parsing, and end-to-end runs.
+79 tests cover the following: normalization, column mapping, data loading, reconciliation logic, output generation, CLI argument parsing, and end-to-end integration (asserting on specific SKU classifications, quantity deltas, quality issue detection, and CSV/JSON output consistency).
 
 ## Key Decisions
 
