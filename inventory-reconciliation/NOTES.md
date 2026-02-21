@@ -22,12 +22,37 @@ Tests cover the following: normalization, column mapping, data loading, reconcil
 
 ## Data Quality Findings
 
-TODO: Fill in after running reconciliation against provided data.
+13 issues across the two snapshots. Grouped by category:
+
+**Whitespace in names (5)** — trailing space on `"Cable Ties 100pk "` and leading space on `" Compressed Air Can"` in snapshot 1. Snapshot 2 has leading space on `" Widget B"`, trailing on `"Mounting Bracket Large "`, and both on `" HDMI Cable 3ft "`. All stripped during normalization.
+
+**Float quantities (2)** — snapshot 2 has `70.0` and `80.00` where integers are expected. Truncated to `70` and `80` but flagged as warnings.
+
+**SKU formatting (3)** — snapshot 2 has `SKU005`, `sku-008`, and `SKU018` (missing hyphens, inconsistent casing). All normalized to `SKU-005`, `SKU-008`, `SKU-018`.
+
+**Date format (1)** — snapshot 2 row 34 uses `01/15/2024` (US format) while everything else is ISO `2024-01-15`. Normalized on load.
+
+**Duplicate SKU (1)** — `SKU-045` appears twice in snapshot 2 (rows 44 and 54). Row 54 also has a negative quantity (`-5`). Both rows excluded from reconciliation per the flag-and-skip policy. This means `SKU-045` shows up as "removed" since it's only usable in snapshot 1.
+
+**Negative quantity (1)** — the duplicate `SKU-045` row 54 has `-5`. Flagged as an error alongside the duplicate.
+
+## Reconciliation Results
+
+- **72 matched** — all show a date change (`2024-01-08` → `2024-01-15`). Most have quantity decreases; two items (`SKU-006`, `SKU-007`) are unchanged.
+- **5 added** — `SKU-076` through `SKU-080` (Stream Deck Mini, Stream Deck XL, Capture Card, USB-C Hub, Thunderbolt Cable). All in Warehouse A.
+- **3 removed** — `SKU-025` (VGA Cable), `SKU-026` (DVI Cable), and `SKU-045` (Multimeter Pro, excluded due to duplicate in snapshot 2).
 
 ## Assumptions
 
-TODO: Fill in after implementation is complete.
+- SKUs follow a `SKU-NNN` pattern. Anything matching `SKU` prefix with digits gets normalized to this format.
+- Quantities should be non-negative integers. Floats are truncated (not rounded) and flagged. Negatives are flagged as errors but still loaded.
+- When a SKU appears twice in the same snapshot, the data is considered ambiguous — both rows are dropped rather than choosing one. This is conservative but avoids silent misreporting.
+- The `01/15/2024` date is assumed to be US format (`MM/DD/YYYY`), not `DD/MM/YYYY`. Since no day value exceeds 12 in the data, this is ambiguous — but US format is listed first in the accepted formats, and it matches the `2024-01-15` dates in the rest of snapshot 2.
+- `SKU-045` appearing as "removed" is a side effect of the duplicate exclusion. In reality, it likely still exists — the snapshot 2 data is just unreliable for that item.
 
 ## Production Considerations
 
-TODO: Fill in after implementation is complete.
+- **External config** — `config.py` works for a standalone script, but a production pipeline would load mappings from YAML/JSON or a database so non-engineers can update them without touching code.
+- **Logging** — `print()` statements would become structured logging with levels, making it easier to pipe into monitoring tools.
+- **Validation layer** — the current approach interleaves validation with loading. At scale, separating these into distinct stages (validate → load → reconcile → output) would make each independently testable and composable.
+- **Idempotency** — output currently overwrites on each run. A production version would include run IDs or timestamps in filenames, or write to a versioned store.
