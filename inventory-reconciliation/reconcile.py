@@ -1,6 +1,8 @@
 """Inventory reconciliation: compare two CSV snapshots and report changes."""
 
 import csv
+import json
+import os
 import re
 from datetime import datetime
 
@@ -230,3 +232,59 @@ def reconcile(snapshot_1: dict, snapshot_2: dict) -> dict:
             removed.append(snapshot_1[sku])
 
     return {"matched": matched, "added": added, "removed": removed}
+
+
+# ---------------------------------------------------------------------------
+# Output generation
+# ---------------------------------------------------------------------------
+
+def write_json(results: dict, issues: list[dict], metadata: dict, filepath: str) -> None:
+    """Write the full reconciliation report as JSON."""
+    output = {
+        "metadata": metadata,
+        "data_quality_issues": issues,
+        **results,
+    }
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(output, f, indent=2)
+
+
+def write_summary_csv(results: dict, filepath: str) -> None:
+    """Write a flat summary CSV for quick human review."""
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    rows = []
+
+    for item in results["matched"]:
+        rows.append({
+            "sku": item["sku"],
+            "name": item["name"],
+            "status": "matched",
+            "quantity_before": item["quantity_before"],
+            "quantity_after": item["quantity_after"],
+            "quantity_change": item["quantity_delta"],
+        })
+    for item in results["added"]:
+        rows.append({
+            "sku": item["sku"],
+            "name": item["name"],
+            "status": "added",
+            "quantity_before": "",
+            "quantity_after": item["quantity"],
+            "quantity_change": "",
+        })
+    for item in results["removed"]:
+        rows.append({
+            "sku": item["sku"],
+            "name": item["name"],
+            "status": "removed",
+            "quantity_before": item["quantity"],
+            "quantity_after": "",
+            "quantity_change": "",
+        })
+
+    fieldnames = ["sku", "name", "status", "quantity_before", "quantity_after", "quantity_change"]
+    with open(filepath, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)

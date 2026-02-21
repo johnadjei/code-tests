@@ -6,7 +6,9 @@ The script loads two CSV snapshots, normalizes their schemas via config-driven c
 
 The reconciliation step compares the two normalized snapshots by SKU — items present in both get a quantity delta and any field-level changes tracked, items only in snapshot 2 are flagged as added, and items only in snapshot 1 as removed. Results are sorted by SKU for deterministic output.
 
-Tests cover normalization, column mapping, data loading, and reconciliation logic.
+Output is written to two files: a JSON report with metadata, quality issues, and full reconciliation results for downstream consumption, and a flat summary CSV for quick human review. The CSV maps each item to a status (matched/added/removed) with before/after quantities.
+
+Tests cover the following: normalization, column mapping, data loading, reconciliation logic, and output generation.
 
 ## Key Decisions
 
