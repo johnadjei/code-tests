@@ -1,5 +1,6 @@
 """Inventory reconciliation: compare two CSV snapshots and report changes."""
 
+import argparse
 import csv
 import json
 import os
@@ -288,3 +289,84 @@ def write_summary_csv(results: dict, filepath: str) -> None:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Compare two inventory snapshots and report changes."
+    )
+    parser.add_argument(
+        "snapshot_1",
+        nargs="?",
+        default=config.DEFAULT_SNAPSHOT_1,
+        help=f"Path to the first snapshot CSV (default: {config.DEFAULT_SNAPSHOT_1})",
+    )
+    parser.add_argument(
+        "snapshot_2",
+        nargs="?",
+        default=config.DEFAULT_SNAPSHOT_2,
+        help=f"Path to the second snapshot CSV (default: {config.DEFAULT_SNAPSHOT_2})",
+    )
+    parser.add_argument(
+        "--output", "-o",
+        default=config.DEFAULT_OUTPUT_DIR,
+        help=f"Output directory (default: {config.DEFAULT_OUTPUT_DIR})",
+    )
+    return parser
+
+
+def main() -> None:
+    parser = build_parser()
+    args = parser.parse_args()
+
+    # Resolve paths relative to script directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    snap1_path = os.path.join(script_dir, args.snapshot_1)
+    snap2_path = os.path.join(script_dir, args.snapshot_2)
+    output_dir = os.path.join(script_dir, args.output)
+
+    print(f"Loading snapshot 1: {snap1_path}")
+    snap1, issues1 = load_snapshot(snap1_path, config.COLUMN_MAPPINGS["snapshot_1"], "snapshot_1")
+
+    print(f"Loading snapshot 2: {snap2_path}")
+    snap2, issues2 = load_snapshot(snap2_path, config.COLUMN_MAPPINGS["snapshot_2"], "snapshot_2")
+
+    all_issues = issues1 + issues2
+
+    print(f"Reconciling {len(snap1)} items from snapshot 1 with {len(snap2)} items from snapshot 2...")
+    results = reconcile(snap1, snap2)
+
+    metadata = {
+        "run_timestamp": datetime.now().isoformat(),
+        "snapshot_1_path": args.snapshot_1,
+        "snapshot_2_path": args.snapshot_2,
+        "snapshot_1_records": len(snap1),
+        "snapshot_2_records": len(snap2),
+        "matched": len(results["matched"]),
+        "added": len(results["added"]),
+        "removed": len(results["removed"]),
+        "quality_issues": len(all_issues),
+    }
+
+    json_path = os.path.join(output_dir, config.OUTPUT_JSON_FILENAME)
+    csv_path = os.path.join(output_dir, config.OUTPUT_CSV_FILENAME)
+
+    write_json(results, all_issues, metadata, json_path)
+    write_summary_csv(results, csv_path)
+
+    print(f"\nResults written to:")
+    print(f"  {json_path}")
+    print(f"  {csv_path}")
+    print(f"\nSummary:")
+    print(f"  Matched: {metadata['matched']}")
+    print(f"  Added:   {metadata['added']}")
+    print(f"  Removed: {metadata['removed']}")
+    print(f"  Quality issues: {metadata['quality_issues']}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,81 @@
+sku,name,status,quantity_before,quantity_after,quantity_change
+SKU-001,Widget A,matched,150,145,-5
+SKU-002,Widget B,matched,75,70,-5
+SKU-003,Gadget Pro,matched,200,185,-15
+SKU-004,Gadget Lite,matched,50,48,-2
+SKU-005,Connector Cable 6ft,matched,500,480,-20
+SKU-006,Connector Cable 10ft,matched,350,350,0
+SKU-007,Power Supply Unit,matched,80,80,0
+SKU-008,Power Supply Unit Pro,matched,45,42,-3
+SKU-009,Mounting Bracket Small,matched,1000,975,-25
+SKU-010,Mounting Bracket Large,matched,750,720,-30
+SKU-011,LED Panel 12x12,matched,120,115,-5
+SKU-012,LED Panel 24x24,matched,90,85,-5
+SKU-013,Thermal Paste Tube,matched,2000,1850,-150
+SKU-014,Cooling Fan 80mm,matched,300,290,-10
+SKU-015,Cooling Fan 120mm,matched,250,245,-5
+SKU-016,USB Hub 4-Port,matched,180,165,-15
+SKU-017,USB Hub 7-Port,matched,95,88,-7
+SKU-018,Ethernet Cable Cat5,matched,800,750,-50
+SKU-019,Ethernet Cable Cat6,matched,600,580,-20
+SKU-020,Ethernet Cable Cat6a,matched,400,390,-10
+SKU-021,HDMI Cable 3ft,matched,450,425,-25
+SKU-022,HDMI Cable 6ft,matched,380,365,-15
+SKU-023,HDMI Cable 10ft,matched,220,210,-10
+SKU-024,DisplayPort Cable,matched,175,170,-5
+SKU-027,Audio Cable 3.5mm,matched,600,575,-25
+SKU-028,Audio Cable RCA,matched,400,385,-15
+SKU-029,Optical Audio Cable,matched,150,145,-5
+SKU-030,Surge Protector 6-Outlet,matched,200,188,-12
+SKU-031,Surge Protector 12-Outlet,matched,120,112,-8
+SKU-032,Extension Cord 10ft,matched,300,285,-15
+SKU-033,Extension Cord 25ft,matched,180,172,-8
+SKU-034,Power Strip,matched,250,240,-10
+SKU-035,Cable Ties 100pk,matched,1500,1420,-80
+SKU-036,Cable Ties 500pk,matched,400,385,-15
+SKU-037,Velcro Straps 50pk,matched,800,765,-35
+SKU-038,Label Maker,matched,25,22,-3
+SKU-039,Label Tape,matched,200,185,-15
+SKU-040,Screwdriver Set,matched,150,142,-8
+SKU-041,Precision Screwdriver Set,matched,100,95,-5
+SKU-042,Wire Stripper,matched,75,70,-5
+SKU-043,Crimping Tool,matched,60,58,-2
+SKU-044,Multimeter Basic,matched,40,35,-5
+SKU-046,Soldering Iron,matched,35,32,-3
+SKU-047,Solder Wire,matched,300,280,-20
+SKU-048,Heat Shrink Tubing,matched,500,475,-25
+SKU-049,Electrical Tape,matched,800,760,-40
+SKU-050,Anti-Static Wrist Strap,matched,200,190,-10
+SKU-051,Anti-Static Mat,matched,50,48,-2
+SKU-052,Compressed Air Can,matched,400,375,-25
+SKU-053,Isopropyl Alcohol 99%,matched,150,140,-10
+SKU-054,Microfiber Cloth 10pk,matched,300,285,-15
+SKU-055,Screen Cleaner,matched,250,235,-15
+SKU-056,Keyboard Cleaner Gel,matched,180,168,-12
+SKU-057,Monitor Stand,matched,45,42,-3
+SKU-058,Laptop Stand,matched,60,58,-2
+SKU-059,Tablet Stand,matched,80,75,-5
+SKU-060,Phone Stand,matched,120,115,-5
+SKU-061,Desk Organizer,matched,90,85,-5
+SKU-062,Cable Management Box,matched,110,105,-5
+SKU-063,Headphone Hook,matched,200,192,-8
+SKU-064,Webcam Mount,matched,75,72,-3
+SKU-065,Ring Light 10in,matched,40,38,-2
+SKU-066,Ring Light 18in,matched,25,22,-3
+SKU-067,Tripod Small,matched,55,52,-3
+SKU-068,Tripod Large,matched,35,33,-2
+SKU-069,Green Screen,matched,20,18,-2
+SKU-070,Backdrop Stand,matched,15,12,-3
+SKU-071,USB Microphone,matched,30,28,-2
+SKU-072,XLR Microphone,matched,20,18,-2
+SKU-073,Pop Filter,matched,100,95,-5
+SKU-074,Boom Arm,matched,45,42,-3
+SKU-075,Shock Mount,matched,40,38,-2
+SKU-076,Stream Deck Mini,added,,15,
+SKU-077,Stream Deck XL,added,,8,
+SKU-078,Capture Card,added,,12,
+SKU-079,USB-C Hub,added,,45,
+SKU-080,Thunderbolt Cable,added,,30,
+SKU-025,VGA Cable,removed,50,,
+SKU-026,DVI Cable,removed,35,,
+SKU-045,Multimeter Pro,removed,25,,

@@ -28,6 +28,8 @@ SKU_SEPARATOR = "-"
 DEFAULT_SNAPSHOT_1 = "data/snapshot_1.csv"
 DEFAULT_SNAPSHOT_2 = "data/snapshot_2.csv"
 DEFAULT_OUTPUT_DIR = "output"
+OUTPUT_JSON_FILENAME = "reconciliation.json"
+OUTPUT_CSV_FILENAME = "summary.csv"
 
 # Date format: normalize everything to ISO 8601
 DATE_FORMAT_ISO = "%Y-%m-%d"
