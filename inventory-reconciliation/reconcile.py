@@ -190,3 +190,43 @@ def load_snapshot(filepath: str, mapping: dict, label: str) -> tuple[dict, list[
             records[sku] = record
 
     return records, issues
+
+
+# ---------------------------------------------------------------------------
+# Reconciliation
+# ---------------------------------------------------------------------------
+
+def reconcile(snapshot_1: dict, snapshot_2: dict) -> dict:
+    """Compare two snapshot dicts and return matched, added, and removed items."""
+    all_skus = set(snapshot_1.keys()) | set(snapshot_2.keys())
+
+    matched = []
+    added = []
+    removed = []
+
+    for sku in sorted(all_skus):
+        in_s1 = sku in snapshot_1
+        in_s2 = sku in snapshot_2
+
+        if in_s1 and in_s2:
+            s1 = snapshot_1[sku]
+            s2 = snapshot_2[sku]
+            qty_delta = s2["quantity"] - s1["quantity"]
+            changes = {}
+            for field in ("name", "location", "date"):
+                if s1[field] != s2[field]:
+                    changes[field] = {"before": s1[field], "after": s2[field]}
+            matched.append({
+                "sku": sku,
+                "name": s2["name"],
+                "quantity_before": s1["quantity"],
+                "quantity_after": s2["quantity"],
+                "quantity_delta": qty_delta,
+                "field_changes": changes,
+            })
+        elif in_s2:
+            added.append(snapshot_2[sku])
+        else:
+            removed.append(snapshot_1[sku])
+
+    return {"matched": matched, "added": added, "removed": removed}

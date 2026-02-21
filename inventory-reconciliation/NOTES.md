@@ -4,7 +4,9 @@
 
 The script loads two CSV snapshots, normalizes their schemas via config-driven column mappings, cleans up each field (SKU casing/hyphens, whitespace, date formats, quantity types), and flags anything suspicious along the way. Duplicates within a snapshot are excluded entirely — both rows get dropped rather than picking one arbitrarily.
 
-So far the data loading and normalization layer is in place with 30 tests covering the individual functions and the full `load_snapshot` pipeline. Reconciliation and output generation are next.
+The reconciliation step compares the two normalized snapshots by SKU — items present in both get a quantity delta and any field-level changes tracked, items only in snapshot 2 are flagged as added, and items only in snapshot 1 as removed. Results are sorted by SKU for deterministic output.
+
+Tests cover normalization, column mapping, data loading, and reconciliation logic.
 
 ## Key Decisions
 
